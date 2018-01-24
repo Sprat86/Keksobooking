@@ -1,0 +1,19 @@
+{
+  "name": "y",
+  "version": "0.0.0",
+  "description": "\"# Keksobooking\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sprat86/Keksobooking.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sprat86/Keksobooking/issues"
+  },
+  "homepage": "https://github.com/Sprat86/Keksobooking#readme"
+}
