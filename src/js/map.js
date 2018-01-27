@@ -22,13 +22,13 @@ function getRandomInt(min, max) {
 
 let mapEl = document.getElementsByClassName('map');
 
-    for (let i = 1; i < 9; i++) {
+for (let i = 1; i < 9; i++) {
     let x = '1',
         y = '2';
 
     const checkIn = checkin[getRandomInt(0, 2)];
 
-    let myObj = {
+    let publication = {
         author: {avatar: "img/avatars/user0" + i},
         offer: {
             title: titles[i - 1],
@@ -48,21 +48,91 @@ let mapEl = document.getElementsByClassName('map');
             y: getRandomInt(100, 500)
         }
     };
-    createElement(mapEl, myObj)
+
+    createElement(mapEl, publication);
+    createElementDiv(mapEl, publication);
 }
 
+// Create DOM element btn_map
 
 function createElement(mapEl, publication) {
-    let btn_map = document.createElement("btn");
-    btn_map.setAttribute('class', 'map__pin');
-    btn_map.style = "left: " + publication.location.x + "px; top:" + publication.location.y + "px;";
+    let buttonMap = document.createElement("btn");
+    buttonMap.setAttribute('class', 'map__pin');
+    buttonMap.style = "left: " + publication.location.x + "px; top:" + publication.location.y + "px;";
 
     let avatarImg = document.createElement('img');
     avatarImg.setAttribute('src', publication.author.avatar + '.png');
     avatarImg.setAttribute("height", "40");
     avatarImg.setAttribute("width", "40");
     avatarImg.setAttribute("draggable", "false");
-    btn_map.appendChild(avatarImg);
-    mapEl[0].appendChild(btn_map);
+    buttonMap.appendChild(avatarImg);
+    mapEl[0].appendChild(buttonMap);
+};
+
+// Create DOM element notice
+
+function createElementDiv(mapEl, publication) {
+    let publicationBlock = document.createElement("div");
+    publicationBlock.setAttribute('class', 'map__card');
+
+    let title = document.createElement('h3');
+    let h3 = document.createTextNode(publication.offer.title);
+    title.appendChild(h3);
+    publicationBlock.appendChild(title);
+
+    let address = document.createElement('p');
+    let pAddress = document.createTextNode(publication.offer.address);
+    address.appendChild(pAddress);
+    publicationBlock.appendChild(address);
+
+    let price = document.createElement('p');
+    let pPrice = document.createTextNode(publication.offer.price + '&#x20bd;/ночь');
+    price.setAttribute('class', 'popup_price');
+    price.appendChild(pPrice);
+    publicationBlock.appendChild(price);
+
+    let type = document.createElement('h4');
+    let h4 = document.createTextNode(getTypeTranslation(publication.offer.type));
+    type.appendChild(h4);
+    publicationBlock.appendChild(type);
+
+    let roomsGuest = document.createElement('p');
+    let pRoomsGuest = document.createTextNode(publication.offer.rooms + ' комнаты для ' + publication.offer.guests + ' гостей');
+    roomsGuest.appendChild(pRoomsGuest);
+    publicationBlock.appendChild(roomsGuest);
+
+    let checkInCheckOut = document.createElement('p');
+    let pCheckInCheckOut = document.createTextNode('Заезд после ' + publication.offer.checkin + ' , выезд после ' + publication.offer.checkout);
+    checkInCheckOut.appendChild(pCheckInCheckOut);
+    publicationBlock.appendChild(checkInCheckOut);
+
+
+    let features = document.createElement('ul');
+    features.setAttribute('class', 'popup__features');
+    for(let i = 0; i < publication.offer.features.length; i++)
+    {
+        let li = document.createElement('li');
+        li.setAttribute('class', 'feature feature--' + publication.offer.features[i]);
+        // let text = document.createTextNode(publication.offer.features[i]);
+        // li.appendChild(text);
+        features.appendChild(li);
+        publicationBlock.appendChild(features)
+    }
+
+
+    mapEl[0].appendChild(publicationBlock);
+    console.log(publication.offer.type)
 }
+
+
+function getTypeTranslation(type) {
+    if (type === 'bungalo') {
+        return 'Бунгало';
+    } else if (type === 'flat') {
+        return 'Квартира';
+    }
+    return 'Дом';
+}
+
+
 
