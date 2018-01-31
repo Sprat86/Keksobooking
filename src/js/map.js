@@ -1,3 +1,4 @@
+
 const titles = [
     "Большая уютная квартира"
     , "Маленькая неуютная квартира"
@@ -21,6 +22,7 @@ function getRandomInt(min, max) {
 }
 
 let mapEl = document.getElementsByClassName('map');
+let mapPins = document.getElementsByClassName('map__pins');
 
 for (let i = 1; i < 9; i++) {
     let x = '1',
@@ -40,7 +42,7 @@ for (let i = 1; i < 9; i++) {
             checkin: checkIn,
             checkout: checkIn,
             features: features.slice(Math.floor(Math.random() * ((features.length - 1) + 1))),
-            description: "",
+            description: "Hi!",
             photos: []
         },
         location: {
@@ -50,7 +52,7 @@ for (let i = 1; i < 9; i++) {
     };
 
     createElement(mapEl, publication);
-    createElementDiv(mapEl, publication);
+    createElementArticle(mapEl, publication);
 }
 
 // Create DOM element btn_map
@@ -66,13 +68,13 @@ function createElement(mapEl, publication) {
     avatarImg.setAttribute("width", "40");
     avatarImg.setAttribute("draggable", "false");
     buttonMap.appendChild(avatarImg);
-    mapEl[0].appendChild(buttonMap);
+    mapPins[0].appendChild(buttonMap);
 };
 
 // Create DOM element notice
 
-function createElementDiv(mapEl, publication) {
-    let publicationBlock = document.createElement("div");
+function createElementArticle(mapEl, publication) {
+    let publicationBlock = document.createElement("article");
     publicationBlock.setAttribute('class', 'map__card');
 
     let title = document.createElement('h3');
@@ -86,7 +88,7 @@ function createElementDiv(mapEl, publication) {
     publicationBlock.appendChild(address);
 
     let price = document.createElement('p');
-    let pPrice = document.createTextNode(publication.offer.price + '&#x20bd;/ночь');
+    let pPrice = document.createTextNode(publication.offer.price+'&#x20bd;/ночь');
     price.setAttribute('class', 'popup_price');
     price.appendChild(pPrice);
     publicationBlock.appendChild(price);
@@ -113,11 +115,15 @@ function createElementDiv(mapEl, publication) {
     {
         let li = document.createElement('li');
         li.setAttribute('class', 'feature feature--' + publication.offer.features[i]);
-        // let text = document.createTextNode(publication.offer.features[i]);
-        // li.appendChild(text);
         features.appendChild(li);
         publicationBlock.appendChild(features)
     }
+
+
+    let description = document.createElement('p');
+    let pDescription = document.createTextNode(publication.offer.description);
+    description.appendChild(pDescription);
+    publicationBlock.appendChild(description);
 
 
     mapEl[0].appendChild(publicationBlock);
@@ -134,5 +140,11 @@ function getTypeTranslation(type) {
     return 'Дом';
 }
 
+//let popAvatar = document.getElementById("popAvatar");
+//popAvatar.src = "publication.author.avatar + '.png'";
+//popAvatar.src = "img/avatars/user05.png";
+//popAvatar.setAttribute('src','img/avatars/user05.png');
 
-
+window.onload = function() {
+    alert( 'Документ и все ресурсы загружены' );
+};
