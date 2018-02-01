@@ -145,6 +145,48 @@ function getTypeTranslation(type) {
 //popAvatar.src = "img/avatars/user05.png";
 //popAvatar.setAttribute('src','img/avatars/user05.png');
 
+//window.onload = function() {
+   // mapEl.setAttribute('class', 'map--faded');
+    //mapEl.classList.add('map--faded');
+    //mapEl.className = 'map--faded';
+//};
+
+//document.addEventListener("mapEl", function() {
+    //mapEl.classList.add('map--faded');
+//});
+
+
+// Add style for "window.onload"
+let mapId = document.getElementById ("map");
+let noticeId = document.getElementById("notice");
+let fieldset = document.getElementsByTagName("fieldset");
 window.onload = function() {
-    alert( 'Документ и все ресурсы загружены' );
+    mapId.classList.add('map--faded');
+    noticeId.classList.add("notice__form--disabled");
+    for( let i = 0; i < fieldset.length; i++ ) {
+        fieldset[i].setAttribute("disabled", "disabled");
+        //fieldset[i].disabled = true;
+        //fieldset[i].classList.add('map--faded');
+    };
 };
+
+
+// Remove slyle for "mouseup"
+let mapPinMain = document.querySelector('.map__pin--main');
+mapPinMain.addEventListener("mouseup", function () {
+    mapId.classList.remove('map--faded');
+    noticeId.classList.remove("notice__form--disabled");
+    for( let i = 0; i < fieldset.length; i++ ) {
+        fieldset[i].disabled = false;
+        }
+});
+
+
+
+
+
+
+
+
+
+
