@@ -154,21 +154,46 @@ function getTypeTranslation(type) {
 //document.addEventListener("mapEl", function() {
     //mapEl.classList.add('map--faded');
 //});
+//fieldset[i].disabled = true;
+//fieldset[i].classList.add('map--faded');
+
+
+
 
 
 // Add style for "window.onload"
 let mapId = document.getElementById ("map");
 let noticeId = document.getElementById("notice");
 let fieldset = document.getElementsByTagName("fieldset");
+let mapPin = document.querySelectorAll('.map__pin');
+let mapCard = document.querySelectorAll('.map__card');
+
 window.onload = function() {
     mapId.classList.add('map--faded');
     noticeId.classList.add("notice__form--disabled");
     for( let i = 0; i < fieldset.length; i++ ) {
         fieldset[i].setAttribute("disabled", "disabled");
-        //fieldset[i].disabled = true;
-        //fieldset[i].classList.add('map--faded');
-    };
+        }
+        mapPinHide (mapPin);
+        mapCardHide(mapCard);
+        mapPinMain.style = "display: block";
 };
+
+
+function mapPinHide (mapPin){
+    for( let i = 0; i < mapPin.length; i++ ) {
+          // mapPin[i].style = "display: none"; - Перезапишет существующее значение style (в данном случае координаты) - использовать нельзя.
+            mapPin[i].style.display = "none"; // Добавит стиль к существующему
+               }
+       };
+
+
+function mapCardHide (mapCard){
+    for( let i = 0; i < mapCard.length; i++ ) {
+        mapCard[i].style = "display: none";
+    }
+};
+
 
 
 // Remove slyle for "mouseup"
@@ -179,8 +204,23 @@ mapPinMain.addEventListener("mouseup", function () {
     for( let i = 0; i < fieldset.length; i++ ) {
         fieldset[i].disabled = false;
         }
-});
+        mapPinShow (mapPin);
+        mapCardShow (mapCard);
+}
+);
 
+function mapPinShow (mapPin){
+    for( let i = 0; i < mapPin.length; i++ ) {
+        //mapPin[i].style = "display: block";
+        mapPin[i].style.display = ""; // убирает стиль display
+    }
+};
+
+function mapCardShow (mapCard){
+    for( let i = 0; i < mapCard.length; i++ ) {
+        mapCard[i].style = "display: ";  // убирает стиль display
+        }
+};
 
 
 
