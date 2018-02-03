@@ -162,6 +162,7 @@ function getTypeTranslation(type) {
 
 
 // Add style for "window.onload"
+
 let mapId = document.getElementById ("map");
 let noticeId = document.getElementById("notice");
 let fieldset = document.getElementsByTagName("fieldset");
@@ -183,7 +184,7 @@ window.onload = function() {
 function mapPinHide (mapPin){
     for( let i = 0; i < mapPin.length; i++ ) {
           // mapPin[i].style = "display: none"; - Перезапишет существующее значение style (в данном случае координаты) - использовать нельзя.
-            mapPin[i].style.display = "none"; // Добавит стиль к существующему
+             mapPin[i].style.display = "none"; // Добавит стиль к существующему
                }
        };
 
@@ -197,6 +198,7 @@ function mapCardHide (mapCard){
 
 
 // Remove slyle for "mouseup"
+
 let mapPinMain = document.querySelector('.map__pin--main');
 mapPinMain.addEventListener("mouseup", function () {
     mapId.classList.remove('map--faded');
@@ -205,7 +207,7 @@ mapPinMain.addEventListener("mouseup", function () {
         fieldset[i].disabled = false;
         }
         mapPinShow (mapPin);
-        mapCardShow (mapCard);
+        //mapCardShow (mapCard);
 }
 );
 
@@ -221,6 +223,56 @@ function mapCardShow (mapCard){
         mapCard[i].style = "display: ";  // убирает стиль display
         }
 };
+
+
+
+
+//Show/hide mapCard (notice):
+
+for (let i = 0; i < mapPin.length; i++) {
+    mapPin[i].addEventListener("click", function () {
+            mapPin[i].classList.add('map__pin--active');
+        }
+    );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
