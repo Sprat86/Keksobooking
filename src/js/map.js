@@ -23,6 +23,7 @@ function getRandomInt(min, max) {
 
 let mapEl = document.getElementsByClassName('map');
 let mapPins = document.getElementsByClassName('map__pins');
+let ruble = '\u20bd';
 
 for (let i = 1; i < 9; i++) {
     let x = '1',
@@ -75,7 +76,20 @@ function createElement(mapEl, publication) {
 
 function createElementArticle(mapEl, publication) {
     let publicationBlock = document.createElement("article");
-    publicationBlock.setAttribute('class', 'map__card');
+    publicationBlock.setAttribute('class', 'map__card popup');
+
+    let popupAvatar = document.createElement('img');
+    popupAvatar.setAttribute('src', publication.author.avatar + '.png');
+    popupAvatar.setAttribute('class', 'popup__avatar');
+    popupAvatar.setAttribute("height", "70");
+    popupAvatar.setAttribute("width", "70");
+    publicationBlock.appendChild(popupAvatar);
+
+    let popupClose = document.createElement("btn");
+    popupClose.setAttribute('class', 'popup__close');
+    let popupCloseText = document.createTextNode('Закрыть');
+    popupClose.appendChild(popupCloseText);
+    publicationBlock.appendChild(popupClose);
 
     let title = document.createElement('h3');
     let h3 = document.createTextNode(publication.offer.title);
@@ -88,7 +102,7 @@ function createElementArticle(mapEl, publication) {
     publicationBlock.appendChild(address);
 
     let price = document.createElement('p');
-    let pPrice = document.createTextNode(publication.offer.price + '&#x20bd;/ночь');
+    let pPrice = document.createTextNode(publication.offer.price + ' ' + ruble + '/ночь');
     price.setAttribute('class', 'popup_price');
     price.appendChild(pPrice);
     publicationBlock.appendChild(price);
@@ -191,9 +205,9 @@ function mapPinHide (mapPin){
 
 function mapCardHide (mapCard){
     for( let i = 0; i < mapCard.length; i++ ) {
-        mapCard[i].style = "display: none";
+        mapCard[i].classList.add('hidden');
+           }
     }
-}
 
 
 
@@ -221,85 +235,55 @@ function mapPinShow (mapPin){
 
 function mapCardShow (mapCard){
     for( let i = 0; i < mapCard.length; i++ ) {
-        mapCard[i].style = "display: ";  // убирает стиль display
-        }
-}
-
-
-
-
-//Show/hide mapCard (notice):
-
-let popup = document.getElementsByClassName('popup');
-let popUp = document.querySelector('.popup');
-
-// for (let i = 0; i < mapPin.length; i++) {
-//     mapPin[i].addEventListener("click", function () {
-//            //mapPin[i].classList.toggle('map__pin--active'); - добавляет/убирает класс при повторном клике на элементе.
-//             if (!mapPin[i].classList.contains('map__pin--active')) {
-//                 mapPin[i].classList.add('map__pin--active');
-//                } else if (mapPin[i].classList.contains('map__pin--active')) {
-//                 mapPin[i].classList.remove('map__pin--active');
-//             }
-//             //popup.style = "display: block";
-//     }
-//     );
-// }
-
-/*$(".map__pin").click(function(e) {
-    e.preventDefault();
-    $(".map__pin").removeClass('map__pin--active');
-    $(this).addClass('map__pin--active');
-});*/
-
-
-/**
- * @description активирует пин при нажатии (пин подсвечивается)
- * @param {object} evt
- * @return {object} id активного пина (button), по которому кликнули/нажали
- */
-var activate = function (evt) {
-    var activePin = evt.currentTarget;
-    activePin.classList.add('map__pin--active');
-    return activePin.dataset.id;
-};
-
-
-
-/**
- * @description удлаяет отрисованные пины
- */
-var remove = function () {
-    var pins = document.querySelectorAll('.map__pin[data-id]');
-    Array.from(pins).forEach(function (value) {
-        value.remove();
-    });
-};
-
-/**
- * @description деактивирует пины, которые были активны (убирает подсветку)
- */
-var disable = function () {
-    var activePin = document.querySelector('.map__pin--active');
-    if (activePin) {
-        activePin.classList.remove('map__pin--active');
+        mapCard[i].classList.remove('hidden');
     }
 };
 
 
 
 
+//Show/hide mapCard (notice):
+let popupClose = document.querySelectorAll('.popup__close');
 
+for (let i = 1; i < mapPin.length; i++) {
+    mapPin[i].addEventListener("click", function () {
+            //mapPin[i].classList.toggle('map__pin--active'); - добавляет/убирает класс при повторном клике на элементе.
+            if (!mapPin[i].classList.contains('map__pin--active')) {
+                mapPin[i].classList.add('map__pin--active');
+                mapCard[i - 1].classList.remove('hidden');
+            } else {
+                mapPin[i].classList.remove('map__pin--active');
+                mapCard[i - 1].classList.add('hidden');
+            }
+        }
+    )
+    }
 
+/*$(".map__pin").click(function(e) {
+    e.preventDefault();
+    $(".map__pin").removeClass('map__pin--active');
+    $(this).addClass('map__pin--active');
+});
 
+for (let i = 1; i < mapPin.length; i++) {
+    mapPin[i].addEventListener("click", function () {
+            //mapPin[i].classList.toggle('map__pin--active'); - добавляет/убирает класс при повторном клике на элементе.
+            if (mapPin[i].classList.contains('map__pin--active')) {
+               mapCard[i-1].classList.remove('hidden');
+            } else if (!mapPin[i].classList.contains('map__pin--active')) {
+                mapCard[i-1].classList.add('hidden');
+            }
+        }
+    );
+}*/
 
-
-
-
-
-
-
-
+for( let i = 0; i < popupClose.length; i++ ) {
+popupClose[i].addEventListener("click", function () {
+        mapCard[i].classList.add('hidden');
+        mapPin[i+1].classList.remove('map__pin--active');
+        }
+    )
+}
 
 
 
