@@ -23,7 +23,7 @@ function getRandomInt(min, max) {
 
 let mapEl = document.getElementsByClassName('map');
 let mapPins = document.getElementsByClassName('map__pins');
-let ruble = '\u20bd';
+let RUBLE = '\u20bd';
 
 for (let i = 1; i < 9; i++) {
     let x = '1',
@@ -59,7 +59,7 @@ for (let i = 1; i < 9; i++) {
 // Create DOM element btn_map
 
 function createElement(mapEl, publication) {
-    let buttonMap = document.createElement("btn");
+    let buttonMap = document.createElement("button");
     buttonMap.setAttribute('class', 'map__pin');
     buttonMap.style = "left: " + publication.location.x + "px; top:" + publication.location.y + "px;";
 
@@ -85,8 +85,9 @@ function createElementArticle(mapEl, publication) {
     popupAvatar.setAttribute("width", "70");
     publicationBlock.appendChild(popupAvatar);
 
-    let popupClose = document.createElement("btn");
+    let popupClose = document.createElement("button");
     popupClose.setAttribute('class', 'popup__close');
+    popupClose.setAttribute('tabindex', '1');
     let popupCloseText = document.createTextNode('Закрыть');
     popupClose.appendChild(popupCloseText);
     publicationBlock.appendChild(popupClose);
@@ -102,7 +103,7 @@ function createElementArticle(mapEl, publication) {
     publicationBlock.appendChild(address);
 
     let price = document.createElement('p');
-    let pPrice = document.createTextNode(publication.offer.price + ' ' + ruble + '/ночь');
+    let pPrice = document.createTextNode(publication.offer.price + ' ' + RUBLE + '/ночь');
     price.setAttribute('class', 'popup_price');
     price.appendChild(pPrice);
     publicationBlock.appendChild(price);
@@ -154,24 +155,6 @@ function getTypeTranslation(type) {
     return 'Дом';
 }
 
-//let popAvatar = document.getElementById("popAvatar");
-//popAvatar.src = "publication.author.avatar + '.png'";
-//popAvatar.src = "img/avatars/user05.png";
-//popAvatar.setAttribute('src','img/avatars/user05.png');
-
-//window.onload = function() {
-   // mapEl.setAttribute('class', 'map--faded');
-    //mapEl.classList.add('map--faded');
-    //mapEl.className = 'map--faded';
-//};
-
-//document.addEventListener("mapEl", function() {
-    //mapEl.classList.add('map--faded');
-//});
-//fieldset[i].disabled = true;
-//fieldset[i].classList.add('map--faded');
-
-
 
 
 
@@ -221,8 +204,7 @@ mapPinMain.addEventListener("mouseup", function () {
         fieldset[i].disabled = false;
         }
         mapPinShow (mapPin);
-        //mapCardShow (mapCard);
-}
+       }
 );
 
 function mapPinShow (mapPin){
@@ -242,48 +224,171 @@ function mapCardShow (mapCard){
 
 
 
-//Show/hide mapCard (notice):
-let popupClose = document.querySelectorAll('.popup__close');
-
+// Show/hide mapCard (notice):
+let ESC_KEYCODE = 27;
+let ENTER_KEYCODE = 13;
 for (let i = 1; i < mapPin.length; i++) {
     mapPin[i].addEventListener("click", function () {
-            //mapPin[i].classList.toggle('map__pin--active'); - добавляет/убирает класс при повторном клике на элементе.
-            if (!mapPin[i].classList.contains('map__pin--active')) {
-                mapPin[i].classList.add('map__pin--active');
-                mapCard[i - 1].classList.remove('hidden');
-            } else {
+            // mapPin[i].classList.toggle('map__pin--active'); //- добавляет/убирает класс при повторном клике на элементе.
+            if (mapPin[i].classList.contains('map__pin--active')) {
                 mapPin[i].classList.remove('map__pin--active');
                 mapCard[i - 1].classList.add('hidden');
+            } else {
+                mapPin[i].classList.add('map__pin--active');
+                mapCard[i - 1].classList.remove('hidden');
             }
-        }
-    )
+            document.addEventListener('keydown', function(evt) {
+                if (evt.keyCode === ESC_KEYCODE || evt.keyCode === ENTER_KEYCODE) {
+                    mapPin[i].classList.remove('map__pin--active');
+                    mapCard[i - 1].classList.add('hidden');
+                }
+            });
+        popupClose[i-1].focus();
+            });
     }
 
-/*$(".map__pin").click(function(e) {
-    e.preventDefault();
-    $(".map__pin").removeClass('map__pin--active');
-    $(this).addClass('map__pin--active');
-});
 
-for (let i = 1; i < mapPin.length; i++) {
-    mapPin[i].addEventListener("click", function () {
-            //mapPin[i].classList.toggle('map__pin--active'); - добавляет/убирает класс при повторном клике на элементе.
-            if (mapPin[i].classList.contains('map__pin--active')) {
-               mapCard[i-1].classList.remove('hidden');
-            } else if (!mapPin[i].classList.contains('map__pin--active')) {
-                mapCard[i-1].classList.add('hidden');
-            }
-        }
-    );
-}*/
 
+    //
+    // $(".map__pin").click(function(e) {
+    //     e.preventDefault();
+    //     $(".map__pin").removeClass('map__pin--active');
+    //     $(this).addClass('map__pin--active');
+    // });
+
+
+
+// Действия на кнопку "Крестик" в объявлении.
+let popupClose = document.querySelectorAll('.popup__close');
 for( let i = 0; i < popupClose.length; i++ ) {
 popupClose[i].addEventListener("click", function () {
         mapCard[i].classList.add('hidden');
         mapPin[i+1].classList.remove('map__pin--active');
+    });
+    popupClose[i].addEventListener("keydown", function (evt) {
+        if (evt.keyCode === ENTER_KEYCODE) {
+            mapCard[i].classList.add('hidden');
+            mapPin[i + 1].classList.remove('map__pin--active');
         }
-    )
-}
+    });
+    }
+
+
+
+
+// Работа с формой объявления:
+let form = document.querySelector('.notice__form');
+let fieldsForm = document.querySelectorAll('form.notice__form fieldset');
+let titleForm = document.querySelector('#title');
+let addressForm = document.querySelector('#address');
+let flatTypeForm = document.querySelector('#type');
+let priceForNightForm = document.querySelector('#price');
+let timeInForm = document.querySelector('#timein');
+let timeOutForm = document.querySelector('#timeout');
+let roomsForm = document.querySelector('#room_number');
+let guestsForm = document.querySelector('#capacity');
+
+// addressForm.setAttribute ("readonly", "readonly");
+// addressForm.setAttribute ("required", "required");
+
+
+// Проверка правильности введенных данных полей "Заголовок" и "Адрес":
+titleForm.addEventListener('invalid', function(evt){
+    if(titleForm.validity.tooShort){
+        titleForm.setCustomValidity('Пожалуйста, введите сообщение длиной не менее 30 символов.')
+    } else if (titleForm.validity.tooLong){
+        titleForm.setCustomValidity('Пожалуйста, введите сообщеине длиной не более 100 символов')
+    } else if (titleForm.validity.valueMissing){
+        titleForm.setCustomValidity('О, Боже, Вы всё-таки забыли про это поле')
+    }
+
+});
+
+
+addressForm.addEventListener('invalid', function(evt){
+   if (addressForm.validity.valueMissing) {
+       addressForm.setCustomValidity('Без этого поля мы не сможем Вас найти')
+   }
+    });
+
+
+
+
+// Поля «время заезда» и «время выезда» - синхронизация:
+timeInForm.addEventListener('change', function(){
+    timeOutForm.value = timeInForm.value;
+    });
+
+timeOutForm.addEventListener('change', function(){
+    timeInForm.value = timeOutForm.value;
+  });
+
+
+
+// Значение поля «Тип жилья» синхронизировано с минимальной ценой:
+let minPrice = {
+    shack: 0,
+    flat: 1000,
+    house: 5000,
+    palace: 10000
+};
+
+flatTypeForm.addEventListener('change', function(){
+    switch (flatTypeForm.options.selectedIndex) {
+        case 0:
+            priceForNightForm.setAttribute('min', minPrice.flat);
+            priceForNightForm.setAttribute('value', minPrice.flat);
+            break;
+        case 1:
+            priceForNightForm.setAttribute('min', minPrice.shack);
+            priceForNightForm.setAttribute('value', minPrice.shack);
+            break;
+        case 2:
+            priceForNightForm.setAttribute('min', minPrice.house);
+            priceForNightForm.setAttribute('value', minPrice.house);
+            break;
+        case 3:
+            priceForNightForm.setAttribute('min', minPrice.palace);
+            priceForNightForm.setAttribute('value', minPrice.palace);
+            break;
+    }
+});
+
+
+
+// Количество комнат связано с количеством гостей:
+roomsForm.addEventListener('change', function(){
+    switch (roomsForm.options.selectedIndex) {
+        case 0:
+            guestsForm.options[2].selected = true;                       // Устанавливает вариант списка по умолчанию.
+            guestsForm.options[2].removeAttribute('disabled');           // Удаляет атрибут disabled, чтобы вариант списка был доступен.
+            guestsForm.options[0].setAttribute('disabled', 'disabled');  // Отключает вариант списка, чтобы нельзя было выбрать.
+            guestsForm.options[1].setAttribute('disabled', 'disabled');
+            guestsForm.options[3].setAttribute('disabled', 'disabled');
+            break;
+        case 1:
+            guestsForm.options[1].selected = true;
+            guestsForm.options[1].removeAttribute('disabled');
+            guestsForm.options[2].removeAttribute('disabled');
+            guestsForm.options[0].setAttribute('disabled', 'disabled');
+            guestsForm.options[3].setAttribute('disabled', 'disabled');
+            break;
+        case 2:
+            guestsForm.options[0].selected = true;
+            guestsForm.options[0].removeAttribute('disabled');
+            guestsForm.options[1].removeAttribute('disabled');
+            guestsForm.options[2].removeAttribute('disabled');
+            guestsForm.options[3].setAttribute('disabled', 'disabled');
+            break;
+        case 3:
+            guestsForm.options[3].selected = true;
+            guestsForm.options[3].removeAttribute('disabled');
+            guestsForm.options[0].setAttribute('disabled', 'disabled');
+            guestsForm.options[1].setAttribute('disabled', 'disabled');
+            guestsForm.options[2].setAttribute('disabled', 'disabled');
+            break;
+    }
+});
 
 
 
