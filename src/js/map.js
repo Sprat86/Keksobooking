@@ -258,7 +258,7 @@ for (let i = 1; i < mapPin.length; i++) {
 
 
 
-// Действия на кнопку "Крестик" в объявлении.
+/** Действия на кнопку "Крестик" в объявлении.*/
 let popupClose = document.querySelectorAll('.popup__close');
 for( let i = 0; i < popupClose.length; i++ ) {
 popupClose[i].addEventListener("click", function () {
@@ -276,9 +276,9 @@ popupClose[i].addEventListener("click", function () {
 
 
 
-// Работа с формой объявления:
-let form = document.querySelector('.notice__form');
-let fieldsForm = document.querySelectorAll('form.notice__form fieldset');
+/** Работа с формой объявления:*/
+//let form = document.querySelector('.notice__form');
+let inputsForm = document.querySelectorAll('.form__element input');
 let titleForm = document.querySelector('#title');
 let addressForm = document.querySelector('#address');
 let flatTypeForm = document.querySelector('#type');
@@ -292,16 +292,17 @@ let guestsForm = document.querySelector('#capacity');
 // addressForm.setAttribute ("required", "required");
 
 
-// Проверка правильности введенных данных полей "Заголовок" и "Адрес":
+/** Проверка правильности введенных данных полей "Заголовок" и "Адрес":*/
 titleForm.addEventListener('invalid', function(evt){
-    if(titleForm.validity.tooShort){
+      if(titleForm.validity.tooShort){
         titleForm.setCustomValidity('Пожалуйста, введите сообщение длиной не менее 30 символов.')
-    } else if (titleForm.validity.tooLong){
-        titleForm.setCustomValidity('Пожалуйста, введите сообщеине длиной не более 100 символов')
+    /*} else if (titleForm.validity.tooLong){
+        titleForm.setCustomValidity('Пожалуйста, введите сообщеине длиной не более 100 символов')*/
     } else if (titleForm.validity.valueMissing){
-        titleForm.setCustomValidity('О, Боже, Вы всё-таки забыли про это поле')
-    }
-
+        titleForm.setCustomValidity('Введите, пожалуйста, заголовок объявления!')
+    } else {
+          titleForm.setCustomValidity('');
+      }
 });
 
 
@@ -313,8 +314,7 @@ addressForm.addEventListener('invalid', function(evt){
 
 
 
-
-// Поля «время заезда» и «время выезда» - синхронизация:
+/** Поля «время заезда» и «время выезда» - синхронизация:*/
 timeInForm.addEventListener('change', function(){
     timeOutForm.value = timeInForm.value;
     });
@@ -325,7 +325,7 @@ timeOutForm.addEventListener('change', function(){
 
 
 
-// Значение поля «Тип жилья» синхронизировано с минимальной ценой:
+/** Значение поля «Тип жилья» синхронизировано с минимальной ценой:*/
 let minPrice = {
     shack: 0,
     flat: 1000,
@@ -356,7 +356,7 @@ flatTypeForm.addEventListener('change', function(){
 
 
 
-// Количество комнат связано с количеством гостей:
+/** Количество комнат связано с количеством гостей: */
 roomsForm.addEventListener('change', function(){
     switch (roomsForm.options.selectedIndex) {
         case 0:
@@ -391,6 +391,18 @@ roomsForm.addEventListener('change', function(){
 });
 
 
+/** Проверка валидности формы:*/
+for (let i = 0; i <inputsForm.length; i++) {
+    inputsForm[i].addEventListener('invalid', function (evt) {
+       if (inputsForm[i].validity.valueMissing) {
+            inputsForm[i].style.border = "2px solid red";
+           inputsForm[i].style.background = 'rgba(222, 213, 213, .5)';
+           inputsForm[i].setAttribute('placeholder', 'Заполните это поле.')
+          } else if (inputsForm[i].validity.valid) {
+           inputsForm[i].style.border = "";
+           }
+           });
+   }
 
 
 
