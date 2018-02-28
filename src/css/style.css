@@ -485,13 +485,13 @@ textarea:focus
 .popup__close:after
 {
   font-family: Roboto, sans-serif;
-  font-size: 50px;
+  font-size: 30px;
   font-weight: normal;
   line-height: 40px;
 
   display: block;
 
-  content: '×';
+  content: '\2718';
   text-indent: 0;
 
   color: #000;

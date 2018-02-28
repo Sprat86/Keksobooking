@@ -28,7 +28,7 @@ for (let i = 1; i < 9; i++) {
     let x = '1',
         y = '2';
 
-    const checkIn = checkin[getRandomInt(0, 2)];
+    const checkIn = checkin[getRandomInt(0, 2)];//Передаем рандомное значение из массива checkIn (см.выше) и затем используем в переменной publication, чтобы время заезда и выезда синхронизировалось.
 
     let publication = {
         author: {avatar: "img/avatars/user0" + i},
@@ -398,6 +398,56 @@ for (let i = 0; i < inputsForm.length; i++) {
     });
 }
 
+
+/** Добавление реакции на перемещение (drag) пина текущего заполняемого объявления mapPinMain:*/
+
+mapPinMain.addEventListener('mousedown', function(evt){
+    evt.preventDefault();
+
+    let startCoords = {
+        x: evt.clientX,
+        y: evt.clientY
+    };
+
+    function onMouseMove(moveEvt){
+        moveEvt.preventDefault();
+
+        let shift = {
+            x: startCoords.x - moveEvt.clientX,
+            y: startCoords.y - moveEvt.clientY
+        };
+
+        startCoords = {  // Перезаписываем переменную, чтобы считать смещение относительно Dom- элемента, а не начальной точки.
+            x: moveEvt.clientX,
+            y: moveEvt.clientY
+        };
+
+        mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
+        mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
+
+       // mapPinMain.style = "left: " + (mapPinMain.offsetLeft - shift.x) + "px; top:" + (mapPinMain.offsetTop - shift.y) + "px;"; - тоже рабочий вариант записи.
+
+
+        /** Функция добавления координат метки mapPinsMain в поле Address:
+         * внутри функции onMouseMove(moveEvt), потому что переменная shift объявлена локально. Вне пределов этой функции ее не будет видно */
+        function refreshAddress () {
+            let xAddress = mapPinMain.offsetLeft - shift.x;
+            let yAddress = mapPinMain.offsetTop - shift.y;
+            addressForm.value = 'x: ' + xAddress + ', y: ' + yAddress;
+        };
+        refreshAddress ();
+    };
+
+    function onMouseUp (upEvt){ // Функция нужна для того, чтобы перетаскивание закончилось при отжатии клавиши мыши. Иначе объект "не отвяжется" от курсора и будет его "преследовать".
+        upEvt.preventDefault();
+
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+});
 
 
 
