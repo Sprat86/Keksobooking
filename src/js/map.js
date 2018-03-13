@@ -1,3 +1,5 @@
+/** @Description of the action: Создание массива карточек объявлений mapCard: */
+
 const titles = [
     "Большая уютная квартира"
     , "Маленькая неуютная квартира"
@@ -236,17 +238,16 @@ for (let i = 1; i < mapPin.length; i++) {
         if (!mapPin[i].classList.contains('map__pin--active')) {
             mapPin[i].classList.add('map__pin--active');
             mapCard[i - 1].classList.remove('hidden');
-            }
+        }
         document.addEventListener('keydown', function (evt) {
             if (evt.keyCode === ESC_KEYCODE || evt.keyCode === ENTER_KEYCODE) {
                 mapPin[i].classList.remove('map__pin--active');
-                mapCard[i-1].classList.add('hidden');
+                mapCard[i - 1].classList.add('hidden');
             }
         });
         popupClose[i - 1].focus();
     });
 }
-
 
 
 // Рабочий код JQuery:
@@ -273,7 +274,7 @@ for (let i = 0; i < popupClose.length; i++) {
 }
 
 
-/** Работа с формой объявления:*/
+/** @Description of the action: Работа с формой объявления:*/
 //let form = document.querySelector('.notice__form');
 let inputsForm = document.querySelectorAll('.form__element input');
 let titleForm = document.querySelector('#title');
@@ -285,8 +286,6 @@ let timeOutForm = document.querySelector('#timeout');
 let roomsForm = document.querySelector('#room_number');
 let guestsForm = document.querySelector('#capacity');
 
-// addressForm.setAttribute ("readonly", "readonly");
-// addressForm.setAttribute ("required", "required");
 
 
 /** Проверка правильности введенных данных полей "Заголовок" и "Адрес":*/
@@ -399,9 +398,22 @@ for (let i = 0; i < inputsForm.length; i++) {
 }
 
 
-/** Добавление реакции на перемещение (drag) пина текущего заполняемого объявления mapPinMain:*/
+/** @Description of the action: Добавление реакции на перемещение (drag) пина текущего заполняемого объявления mapPinMain: */
 
-mapPinMain.addEventListener('mousedown', function(evt){
+let filtersContainer = document.querySelector('.map__filters-container');
+let mapPinMainSize = {
+    HEIGHT: 87,
+    WIDTH: 65
+};
+// Задаем координаты, в пределах которых будем ограничивать перемещение mapPinMain (согласно условиям проекта):
+let mapBordersCoordinates = {
+    top: mapEl.offsetTop + 100,
+    right: mapEl.offsetWidth + mapPinMainSize.WIDTH / 2,
+    bottom: mapEl.offsetHeight - filtersContainer.offsetHeight,
+    left: mapPinMainSize.WIDTH / 2
+};
+
+mapPinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
     let startCoords = {
@@ -409,9 +421,10 @@ mapPinMain.addEventListener('mousedown', function(evt){
         y: evt.clientY
     };
 
-    function onMouseMove(moveEvt){
+    /** Функция перемещения. */
+    function onMouseMove(moveEvt) {
         moveEvt.preventDefault();
-
+        // Переменная сдвига курсора:
         let shift = {
             x: startCoords.x - moveEvt.clientX,
             y: startCoords.y - moveEvt.clientY
@@ -422,25 +435,35 @@ mapPinMain.addEventListener('mousedown', function(evt){
             y: moveEvt.clientY
         };
 
-        mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
-        mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
+        /** Функция, ограничивающая перемещение объекта mapPinMain в пределах карты mapEl:*/
+        function onDrag(evt) {
+            if (mapPinMain.offsetLeft - shift.x >= mapBordersCoordinates.left && mapPinMain.offsetLeft - shift.x <= mapBordersCoordinates.right - mapPinMain.offsetWidth) {
+                mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
+            }
+            if (mapPinMain.offsetTop - shift.y >= mapBordersCoordinates.top && mapPinMain.offsetTop - shift.y <= mapBordersCoordinates.bottom - mapPinMain.offsetHeight) {
+                mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
+            }
+        };
 
-       // mapPinMain.style = "left: " + (mapPinMain.offsetLeft - shift.x) + "px; top:" + (mapPinMain.offsetTop - shift.y) + "px;"; - тоже рабочий вариант записи.
+        // mapPinMain.style.zIndex = 10; - добавляем, если необходимо, чтобы элемент "перекрывал" другие элементы. Иначе он перетаскивается под ними.
+        // mapPinMain.style = "left: " + (mapPinMain.offsetLeft - shift.x) + "px; top:" + (mapPinMain.offsetTop - shift.y) + "px;"; - тоже рабочий вариант записи.
 
 
         /** Функция добавления координат метки mapPinsMain в поле Address:
-         * внутри функции onMouseMove(moveEvt), потому что переменная shift объявлена локально. Вне пределов этой функции ее не будет видно */
-        function refreshAddress () {
-            let xAddress = mapPinMain.offsetLeft - shift.x;
-            let yAddress = mapPinMain.offsetTop - shift.y;
+         * внутри функции onMouseMove(moveEvt), потому что переменная shift объявлена локально. Вне пределов этой функции ее не будет видно. */
+        let xAddress = mapPinMain.offsetLeft - shift.x;
+        let yAddress = mapPinMain.offsetTop - shift.y;
+
+        function refreshAddress() {
             addressForm.value = 'x: ' + xAddress + ', y: ' + yAddress;
         };
-        refreshAddress ();
+        onDrag(evt);
+        refreshAddress();
     };
 
-    function onMouseUp (upEvt){ // Функция нужна для того, чтобы перетаскивание закончилось при отжатии клавиши мыши. Иначе объект "не отвяжется" от курсора и будет его "преследовать".
+    /** Функция нужна для того, чтобы перетаскивание закончилось при отжатии клавиши мыши. Иначе объект "не отвяжется" от курсора и будет его "преследовать". */
+    function onMouseUp(upEvt) {
         upEvt.preventDefault();
-
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
     };
@@ -452,9 +475,77 @@ mapPinMain.addEventListener('mousedown', function(evt){
 
 
 
+/*
+// Функция проверяет, будет ли метка находиться в пределах допустимых границ по горизонтали после предполагаемого сдвига
+function isPinInHorizontalBorders(xShift) {
+    if (mapPinMain.offsetLeft - xShift >= mapBordersCoordinates.left && mapPinMain.offsetLeft - xShift <= mapBordersCoordinates.right - mapPinMain.offsetWidth) {
+        return mapPinMain.offsetLeft - xShift;
+    }
+};
+
+// Функция проверяет, будет ли метка находиться в пределах допустимых границ по вертикали после предполагаемого сдвига
+function isPinInVerticalBorders(yShift) {
+    if (mapPinMain.offsetTop - yShift >= mapBordersCoordinates.top && mapPinMain.offsetTop - yShift <= mapBordersCoordinates.bottom - mapPinMain.offsetHeight) {
+        return mapPinMain.offsetTop - yShift;
+    }
+};
 
 
+// Функция, отрисовывающая новое положение метки во время перетаскивания
+function refreshMapPinPosition(xShift, yShift) {
+    if (isPinInVerticalBorders(yShift)) {
+        mapPinMain.style.top = mapPinMain.offsetTop - yShift + 'px';
+    }
+    if (isPinInHorizontalBorders(xShift)) {
+        mapPinMain.style.left = mapPinMain.offsetLeft - xShift + 'px';
+    }
+};
 
+
+// Обработчик перетаскивания метки
+function mapPinMouseDown(evt) {
+    evt.preventDefault();
+    let startCoords = {
+        x: evt.clientX,
+        y: evt.clientY
+    };
+
+    function onMouseMove(moveEvt) {
+        let shift = {
+            x: startCoords.x - moveEvt.clientX,
+            y: startCoords.y - moveEvt.clientY
+        };
+
+        startCoords = {
+            x: moveEvt.clientX,
+            y: moveEvt.clientY
+        };
+
+        let xAddress = mapPinMain.offsetLeft - shift.x;
+        let yAddress = mapPinMain.offsetTop - shift.y;
+
+        function refreshAddress() {
+            addressForm.value = 'x: ' + xAddress + ', y: ' + yAddress;
+        };
+
+        refreshMapPinPosition(shift.x, shift.y);
+        refreshAddress();
+    };
+
+    /!** Функция нужна для того, чтобы перетаскивание закончилось при отжатии клавиши мыши. Иначе объект "не отвяжется" от курсора и будет его "преследовать". *!/
+    function onMouseUp(upEvt) {
+        upEvt.preventDefault();
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+};
+
+mapPinMain.addEventListener('mousedown', mapPinMouseDown);
+
+*/
 
 
 
