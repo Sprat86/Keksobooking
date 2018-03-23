@@ -57,7 +57,7 @@ for (let i = 1; i < 9; i++) {
     createElementArticle(mapEl, publication);
 }
 
-// Create DOM element btn_map
+// Create DOM element btn_map (map pin):
 
 function createElement(publicationCreatingEl) { // Задаем функции параметр "publicationCreatingEl" и внутри функции работаем с этим параметром.
     let buttonMap = document.createElement("button");
@@ -73,7 +73,7 @@ function createElement(publicationCreatingEl) { // Задаем функции �
     mapPins[0].appendChild(buttonMap);
 }
 
-// Create DOM element notice
+// Create DOM element "notice"(map card):
 
 function createElementArticle(mapEl, publicationCreatingElement) { // Задаем функции параметр "publicationCreatingElement" и внутри функции работаем с этим параметром.
     let publicationBlock = document.createElement("article");
@@ -231,7 +231,7 @@ for (let i = 1; i < mapPin.length; i++) {
         if (mapPinActive.length) {
             mapPinActive[0].classList.remove('map__pin--active');
         }
-        mapCardHide(mapCard); // Вызываем функцию, чтобы каждый раз присваивать класс 'hidden' карточкам объявления. Тогда при удалении класса (см. ниже) показывается только одна карточка.
+        mapCardHide(mapCard); // Вызываем функцию, чтобы каждый раз присваивать класс 'hidden' карточкам объявления. Тогда при удалении класса (см. выше) показывается только одна карточка.
 
         //mapPin[i].classList.toggle('map__pin--active'); //- добавляет/убирает класс при повторном клике на элементе.
 
