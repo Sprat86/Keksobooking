@@ -1,73 +1,89 @@
 /** Модуль для отрисовки элемента на карточке. */
 
-(function (){
+(function () {
 
-    /** Show/hide mapCard (notice): */
+// Create DOM element "notice"(map card):
 
-    window.mapCard = document.querySelectorAll('.map__card');
-    let ESC_KEYCODE = 27;
-    let ENTER_KEYCODE = 13;
-    let mapPinActive = document.getElementsByClassName('map__pin--active'); // Берём элемент с классом 'map__pin--active'. Так как он всегда на странице один,
-// то и работает с ним, как с массивом с одним элементом.
+    let RUBLE = '\u20bd';
 
-    for (let i = 1; i < mapPin.length; i++) {
-        mapPin[i].addEventListener("click", function (event) {
+    window.createElementArticle = function (mapEl, publicationCreatingElement){ // Задаем функции параметр "publicationCreatingElement" и внутри функции работаем с этим параметром.
+        let publicationBlock = document.createElement("article");
+        publicationBlock.setAttribute('class', 'map__card popup');
 
-            if (mapPinActive.length) {
-                mapPinActive[0].classList.remove('map__pin--active');
-            }
-            mapCardHide(mapCard); // Вызываем функцию, чтобы каждый раз присваивать класс 'hidden' карточкам объявления. Тогда при удалении класса (см. выше) показывается только одна карточка.
+        let popupAvatar = document.createElement('img');
+        popupAvatar.setAttribute('src', publicationCreatingElement.author.avatar + '.png');
+        popupAvatar.setAttribute('class', 'popup__avatar');
+        popupAvatar.setAttribute("height", "70");
+        popupAvatar.setAttribute("width", "70");
+        publicationBlock.appendChild(popupAvatar);
 
-            //mapPin[i].classList.toggle('map__pin--active'); //- добавляет/убирает класс при повторном клике на элементе.
+        let popupClose = document.createElement("button");
+        popupClose.setAttribute('class', 'popup__close');
+        popupClose.setAttribute('tabindex', '1');
+        let popupCloseText = document.createTextNode('Закрыть');
+        popupClose.appendChild(popupCloseText);
+        publicationBlock.appendChild(popupClose);
 
-            if (!mapPin[i].classList.contains('map__pin--active')) {
-                mapPin[i].classList.add('map__pin--active');
-                mapCard[i - 1].classList.remove('hidden');
-            }
-            document.addEventListener('keydown', function (evt) {
-                if (evt.keyCode === ESC_KEYCODE || evt.keyCode === ENTER_KEYCODE) {
-                    mapPin[i].classList.remove('map__pin--active');
-                    mapCard[i - 1].classList.add('hidden');
-                }
-            });
-            popupClose[i - 1].focus();
-        });
+        let title = document.createElement('h3');
+        let h3 = document.createTextNode(publicationCreatingElement.offer.title);
+        title.appendChild(h3);
+        publicationBlock.appendChild(title);
+
+        let address = document.createElement('p');
+        let pAddress = document.createTextNode(publicationCreatingElement.offer.address);
+        address.appendChild(pAddress);
+        publicationBlock.appendChild(address);
+
+        let price = document.createElement('p');
+        let pPrice = document.createTextNode(publicationCreatingElement.offer.price + ' ' + RUBLE + '/ночь');
+        price.setAttribute('class', 'popup_price');
+        price.appendChild(pPrice);
+        publicationBlock.appendChild(price);
+
+        let type = document.createElement('h4');
+        let h4 = document.createTextNode(getTypeTranslation(publicationCreatingElement.offer.type));
+        type.appendChild(h4);
+        publicationBlock.appendChild(type);
+
+        let roomsGuest = document.createElement('p');
+        let pRoomsGuest = document.createTextNode(publicationCreatingElement.offer.rooms + ' комнаты для ' + publicationCreatingElement.offer.guests + ' гостей');
+        roomsGuest.appendChild(pRoomsGuest);
+        publicationBlock.appendChild(roomsGuest);
+
+        let checkInCheckOut = document.createElement('p');
+        let pCheckInCheckOut = document.createTextNode('Заезд после ' + publicationCreatingElement.offer.checkin + ' , выезд после ' + publicationCreatingElement.offer.checkout);
+        checkInCheckOut.appendChild(pCheckInCheckOut);
+        publicationBlock.appendChild(checkInCheckOut);
+
+
+        let features = document.createElement('ul');
+        features.setAttribute('class', 'popup__features');
+        for (let i = 0; i < publicationCreatingElement.offer.features.length; i++) {
+            let li = document.createElement('li');
+            li.setAttribute('class', 'feature feature--' + publicationCreatingElement.offer.features[i]);
+            features.appendChild(li);
+            publicationBlock.appendChild(features)
+        }
+
+
+        let description = document.createElement('p');
+        let pDescription = document.createTextNode(publicationCreatingElement.offer.description);
+        description.appendChild(pDescription);
+        publicationBlock.appendChild(description);
+
+
+        mapEl.appendChild(publicationBlock);
+        console.log(publicationCreatingElement.offer.type)
     }
 
 
-    window.mapCardHide = function (mapCard) {
-        for (let i = 0; i < mapCard.length; i++) {
-            mapCard[i].classList.add('hidden');
+    function getTypeTranslation(type) {
+        if (type === 'bungalo') {
+            return 'Бунгало';
+        } else if (type === 'flat') {
+            return 'Квартира';
         }
-    };
-
-    function mapCardShow(mapCard) {
-        for (let i = 0; i < mapCard.length; i++) {
-            mapCard[i].classList.remove('hidden');
-        }
-    };
-
-// Рабочий код JQuery:
-// $(".map__pin").click(function(e) {
-//     e.preventDefault();
-//     $(".map__pin").removeClass('map__pin--active');
-//     $(this).addClass('map__pin--active');
-// });
-
-
-    /** Действия на кнопку "Крестик" в объявлении.*/
-    let popupClose = document.querySelectorAll('.popup__close');
-    for (let i = 0; i < popupClose.length; i++) {
-        popupClose[i].addEventListener("click", function () {
-            mapCard[i].classList.add('hidden');
-            mapPin[i + 1].classList.remove('map__pin--active');
-        });
-        popupClose[i].addEventListener("keydown", function (evt) {
-            if (evt.keyCode === ENTER_KEYCODE) {
-                mapCard[i].classList.add('hidden');
-                mapPin[i + 1].classList.remove('map__pin--active');
-            }
-        });
+        return 'Дом';
     }
 
 
