@@ -321,7 +321,7 @@ timeOutForm.addEventListener('change', function () {
 
 /** Значение поля «Тип жилья» синхронизировано с минимальной ценой:*/
 let minPrice = {
-    shack: 0,
+    bungalo: 0,
     flat: 1000,
     house: 5000,
     palace: 10000
@@ -334,8 +334,8 @@ flatTypeForm.addEventListener('change', function () {
             priceForNightForm.setAttribute('value', minPrice.flat);
             break;
         case 1:
-            priceForNightForm.setAttribute('min', minPrice.shack);
-            priceForNightForm.setAttribute('value', minPrice.shack);
+            priceForNightForm.setAttribute('min', minPrice.bungalo);
+            priceForNightForm.setAttribute('value', minPrice.bungalo);
             break;
         case 2:
             priceForNightForm.setAttribute('min', minPrice.house);
