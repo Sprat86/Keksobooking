@@ -35,45 +35,6 @@
     });
 
 
-    /*/!** Поля «время заезда» и «время выезда» - синхронизация:*!/
-    timeInForm.addEventListener('change', function () {
-        timeOutForm.value = timeInForm.value;
-    });
-
-    timeOutForm.addEventListener('change', function () {
-        timeInForm.value = timeOutForm.value;
-    });
-
-
-    /!** Значение поля «Тип жилья» синхронизировано с минимальной ценой:*!/
-    let minPrice = {
-        bungalo: 0,
-        flat: 1000,
-        house: 5000,
-        palace: 10000
-    };
-
-    flatTypeForm.addEventListener('change', function () {
-        switch (flatTypeForm.options.selectedIndex) {
-            case 0:
-                priceForNightForm.setAttribute('min', minPrice.flat);
-                priceForNightForm.setAttribute('value', minPrice.flat);
-                break;
-            case 1:
-                priceForNightForm.setAttribute('min', minPrice.bungalo);
-                priceForNightForm.setAttribute('value', minPrice.bungalo);
-                break;
-            case 2:
-                priceForNightForm.setAttribute('min', minPrice.house);
-                priceForNightForm.setAttribute('value', minPrice.house);
-                break;
-            case 3:
-                priceForNightForm.setAttribute('min', minPrice.palace);
-                priceForNightForm.setAttribute('value', minPrice.palace);
-                break;
-        }
-    });
-*/
 
     /** Количество комнат связано с количеством гостей: */
     roomsForm.addEventListener('change', function () {
