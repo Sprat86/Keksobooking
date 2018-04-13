@@ -2,42 +2,11 @@
 
 (function () {
 
-
-    /*let xhr = new XMLHttpRequest();
-
-    xhr.addEventListener('load', function(evt){
-
-        console.log(xhr.readyState);
-        console.log(xhr.status + ' ' + xhr.statusText);
-        console.log(evt.target === xhr);
-        console.log(xhr.responseText);
-
-        try{
-            let arrayJSON = JSON.parse(xhr.responseText);
-            console.log(arrayJSON);
-        } catch (err){
-            console.error(err.message)
-        };
-    })
-
-    xhr.open('GET', "https://js.dump.academy/keksobooking/data");
-    xhr.send();*/
-
-
     let URL = "https://js.dump.academy/keksobooking/data";
-
-    let onError = function (message) {
-        console.error(message);
-    };
-
-    let onLoad = function (data) {
-        let avatars = data;
-        console.log(avatars);
-    };
 
     let xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
-
+    xhr.timeout = 1000;
     xhr.addEventListener('load', function () {
         switch (xhr.status) {
             case 200:
@@ -57,7 +26,7 @@
         onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
         console.log(onError);
     });
-    xhr.timeout = 1000;
+
     xhr.open('GET', URL);
     xhr.send();
 
