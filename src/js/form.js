@@ -6,10 +6,6 @@
     let inputsForm = document.querySelectorAll('.form__element input');
     let titleForm = document.querySelector('#title');
     window.addressForm = document.querySelector('#address');
-    let flatTypeForm = document.querySelector('#type');
-    let priceForNightForm = document.querySelector('#price');
-    let timeInForm = document.querySelector('#timein');
-    let timeOutForm = document.querySelector('#timeout');
     let roomsForm = document.querySelector('#room_number');
     let guestsForm = document.querySelector('#capacity');
 

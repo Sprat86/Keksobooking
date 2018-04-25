@@ -1,4 +1,3 @@
-/** @Description of the action: Создание массива карточек объявлений mapCard: */
 /** Модуль, который создает данные. */
 
 (function () {
@@ -25,8 +24,11 @@
     }
 
     window.mapEl = document.getElementsByClassName('map')[0];
-    let mapPins = document.getElementsByClassName('map__pins');
+    window.mapPins = document.getElementsByClassName('map__pins');
 
+
+    /** Функция создания пинов и карточек объявлений на основе массива из проекта:*/
+    window.createPinCard = function () {
     for (let i = 1; i < 9; i++) {
         let x = '1',
             y = '2';
@@ -45,7 +47,7 @@
                 checkin: checkIn,
                 checkout: checkIn,
                 features: features.slice(Math.floor(Math.random() * ((features.length - 1) + 1))),
-                description: "Hi!",
+                description: "",
                 photos: []
             },
             location: {
@@ -54,13 +56,16 @@
             }
         };
 
-        createElement(publication);
-        createElementArticle(mapEl, publication);
+        createPinsArray(publication);
+        createCardArray(mapEl, publication);
     }
+    };
+    createPinCard();
 
-// Create DOM element btn_map (map pin):
 
-    function createElement(publicationCreatingEl) { // Задаем функции параметр "publicationCreatingEl" и внутри функции работаем с этим параметром.
+
+    /** Функция создания пина из массива по данным проекта:*/
+    function createPinsArray(publicationCreatingEl) { // Задаем функции параметр "publicationCreatingEl" и внутри функции работаем с этим параметром.
         let buttonMap = document.createElement("button");
         buttonMap.setAttribute('class', 'map__pin');
         buttonMap.style = "left: " + publicationCreatingEl.location.x + "px; top:" + publicationCreatingEl.location.y + "px;";
@@ -72,7 +77,27 @@
         avatarImg.setAttribute("draggable", "false");
         buttonMap.appendChild(avatarImg);
         mapPins[0].appendChild(buttonMap);
-    }
+    };
+
+
+    /** Функция создания пина из данных бэкэнда:*/
+    window.createPins = function (avatars) {
+        for (let i = 0; i < avatars.length; i++) {
+            let buttonMap = document.createElement("button");
+            buttonMap.setAttribute('class', 'map__pin');
+            buttonMap.style = "left: " + avatars[i].location.x + "px; top:" + avatars[i].location.y + "px;";
+
+            let avatarImg = document.createElement('img');
+            avatarImg.setAttribute('src', avatars[i].author.avatar);
+            avatarImg.setAttribute("height", "40");
+            avatarImg.setAttribute("width", "40");
+            avatarImg.setAttribute("draggable", "false");
+            buttonMap.appendChild(avatarImg);
+            mapPins[0].appendChild(buttonMap);
+        }
+        createCard(mapEl, avatars);
+        showCardBackend();
+    };
 
 
 })();

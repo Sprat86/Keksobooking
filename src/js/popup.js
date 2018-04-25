@@ -3,7 +3,7 @@
 (function () {
 
 
-    // Функция для создания и стилизации всплывающего окна:
+    /** Функция для создания и стилизации всплывающего окна:*/
     let createPopUp = function () {
         let popUp = document.createElement('div');
         popUp.style.position = 'fixed';
@@ -21,20 +21,20 @@
     };
 
 
-    // Функция добавления элементов диалогового окна на страницу
+    /** Функция добавления элементов диалогового окна на страницу*/
     let renderDialog = function () {
         let fragment = document.createDocumentFragment();
         fragment.appendChild(createPopUp());
         document.body.appendChild(fragment);
     };
 
-    // Функция показа диалогового окна
+    //* Функция показа диалогового окна*/
     let showDialog = function (message) {
         popUp.textContent = message;
         popUp.classList.remove('hidden');
     };
 
-    // Функция скрытия диалогового окна
+    /** Функция скрытия диалогового окна*/
     let hideDialog = function () {
         popUp.classList.add('hidden');
     };
@@ -50,22 +50,16 @@
 
 
     window.popup = {
-        // Функция, выводящая окно с ошибкой при неудачной передаче данных
+        /** Функция, выводящая окно с ошибкой при неудачной передаче данных*/
         errorHandler: function (errorMessage) {
             showDialog(errorMessage);
         },
 
-        // Функция, выводящая окно с сообщением об успешной отправке данных и сбрасывающая форму к первоначальному состоянию
+        /** Функция, выводящая окно с сообщением об успешной отправке данных и сбрасывающая форму к первоначальному состоянию*/
         uploadSuccessHandler: function () {
             showDialog('Данные успешно отправлены');
             form.reset();
-        },
-
-        // Функция, выводящая окно с сообщением об успешной загрузке данных с сервера:
-        downloadSuccessHandler: function () {
-            showDialog('Данные успешно загружены');
         }
-
     };
 
 

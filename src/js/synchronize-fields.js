@@ -16,12 +16,12 @@
         palace: 10000
     };
 
-    /** @description присваивает значение элементу     */
+    /** Функция присваивает значение элементу     */
     let syncValues = function (element, value) {
         element.value = value;
     };
 
-    /** @description присваивает минимальное значение элементу      */
+    /** Функция присваивает минимальное значение элементу      */
     let syncValueWithMin = function (element, value) {
         element.min = value;
     };

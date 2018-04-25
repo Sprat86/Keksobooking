@@ -4,6 +4,7 @@
 
     let URL = "https://js.dump.academy/keksobooking";
 
+    /** Функция, преобразования JSONа и отслеживания статуса загрузки: */
     let setup = function (onLoad, onError) {
         let xhr = new XMLHttpRequest();
         xhr.responseType = 'json';
@@ -31,14 +32,14 @@
         return xhr;
     };
 
-
+/** Функция загрузки данных на сервер: */
     window.upload = function (data, onLoad, onError) {
         let xhr = setup(onLoad, onError);
         xhr.open('POST', URL);
         xhr.send(data);
     };
 
-
+/** Функция скачивания данных с сервера: */
     window.download = function (onLoad, onError) {
         let xhr = setup(onLoad, onError);
         xhr.open('GET', URL + '/data');
@@ -47,7 +48,7 @@
 
 
     window.form = document.querySelector('.notice__form');
-
+/** Функция отправки введенных в форму данных на сервер: */
     let formSubmit = function (evt) {
         window.upload(new FormData(form), window.popup.uploadSuccessHandler, window.popup.errorHandler);
         form.reset();
@@ -57,7 +58,7 @@
     form.addEventListener('submit', formSubmit);
 
 
-    window.download(window.popup.downloadSuccessHandler, window.popup.errorHandler);
+    // window.download(createPins, window.popup.errorHandler);
 
 
 })();
