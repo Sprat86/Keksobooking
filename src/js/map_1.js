@@ -9,8 +9,7 @@
         HEIGHT: 87,
         WIDTH: 65
     };
-// Задаем координаты, в пределах которых будем ограничивать перемещение mapPinMain (согласно условиям проекта):
-//     let mapEl = document.getElementsByClassName('map')[0];
+
     let mapBordersCoordinates = {
         top: mapEl.offsetTop + 100,
         right: mapEl.offsetWidth + mapPinMainSize.WIDTH / 2,
@@ -29,16 +28,17 @@
         /** Функция перемещения. */
         function onMouseMove(moveEvt) {
             moveEvt.preventDefault();
-            // Переменная сдвига курсора:
+
             let shift = {
                 x: startCoords.x - moveEvt.clientX,
                 y: startCoords.y - moveEvt.clientY
             };
 
-            startCoords = {  // Перезаписываем переменную, чтобы считать смещение относительно Dom- элемента, а не начальной точки.
+            startCoords = {
                 x: moveEvt.clientX,
                 y: moveEvt.clientY
             };
+
 
             /** Функция, ограничивающая перемещение объекта mapPinMain в пределах карты mapEl:*/
             function onDrag(evt) {
@@ -48,10 +48,8 @@
                 if (mapPinMain.offsetTop - shift.y >= mapBordersCoordinates.top && mapPinMain.offsetTop - shift.y <= mapBordersCoordinates.bottom - mapPinMain.offsetHeight) {
                     mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
                 }
-            };
 
-            // mapPinMain.style.zIndex = 10; - добавляем, если необходимо, чтобы элемент "перекрывал" другие элементы. Иначе он перетаскивается под ними.
-            // mapPinMain.style = "left: " + (mapPinMain.offsetLeft - shift.x) + "px; top:" + (mapPinMain.offsetTop - shift.y) + "px;"; - тоже рабочий вариант записи.
+            };
 
 
             /** Функция добавления координат метки mapPinsMain в поле Address:
@@ -65,6 +63,7 @@
             onDrag(evt);
             refreshAddress();
         };
+
 
         /** Функция нужна для того, чтобы перетаскивание закончилось при отжатии клавиши мыши. Иначе объект "не отвяжется" от курсора и будет его "преследовать". */
         function onMouseUp(upEvt) {
